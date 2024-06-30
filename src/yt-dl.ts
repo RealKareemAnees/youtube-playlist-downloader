@@ -1,8 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import EventEmitter from "events";
 import type { Readable } from "stream";
-import * as ytdl from "ytdl-core";
+import ytdl from "ytdl-core";
 
 @Injectable()
 export class YtDl {
