@@ -3,6 +3,8 @@
         "@nestjs/common": "^10.3.9",
         "@nestjs/config": "^3.2.2",
         "@nestjs/core": "^10.3.9",
+        "cheerio": "^1.0.0-rc.12",
+        "puppeteer": "^22.12.1",
         "ytdl-core": "^4.11.5"
     },
     "scripts": {
