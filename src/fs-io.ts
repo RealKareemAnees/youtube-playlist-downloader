@@ -16,11 +16,11 @@ export class FsIo {
         format?: string,
         filename?: string,
         dist?: string,
-    ): string {
+        cb?: (err: NodeJS.ErrnoException | null, path: string) => void,
+    ): void {
         if (!dist) dist = this.configService.get("DEFAULT_DIR");
-        if (!filename)
-            filename = this.configService.get("DEFAULT_FILENAME") + "";
-        if (!format) format = "mp4";
+        if (!filename) filename = this.configService.get("DEFAULT_FILENAME");
+        if (!format) format = this.configService.get("DEFAULT_FORMAT");
 
         const path = join(dist, filename + "." + format);
 
@@ -34,9 +34,15 @@ export class FsIo {
 
         content.on("error", (err) => {
             writeStream.close();
-            throw err;
+            if (cb) cb(err, null);
         });
 
-        return path;
+        writeStream.on("finish", () => {
+            if (cb) cb(null, path);
+        });
+
+        writeStream.on("error", (err) => {
+            if (cb) cb(err, null);
+        });
     }
 }
