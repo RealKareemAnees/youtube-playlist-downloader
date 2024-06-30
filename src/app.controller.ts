@@ -9,8 +9,16 @@ export class AppController {
     getBasicInfo(videoURL: string) {
         return this.appService.getBasicInfo(videoURL);
     }
-    downloadOneVideo(url: string, options: ytdl.downloadOptions = {}) {
-        return this.appService.downloadOneVideo(url);
+    downloadOneVideo(
+        url: string,
+        options: {
+            itag: number;
+            format?: string;
+            filename?: string;
+            dist?: string;
+        },
+    ) {
+        return this.appService.downloadOneVideo(url, options);
     }
 
     async downloadPlaylist(playlistURL: string) {

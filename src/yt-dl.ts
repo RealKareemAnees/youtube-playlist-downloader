@@ -7,18 +7,13 @@ import ytdl from "ytdl-core";
 export class YtDl {
     constructor(private configService: ConfigService) {}
 
-    async getBasicInfo(videoURL: string) {
-        const info = await ytdl.getBasicInfo(videoURL);
-        return info;
-    }
-
-    async getInfo(videoURL: string) {
+    async getBasicInfo(videoURL: string): Promise<ytdl.videoInfo> {
         const info = await ytdl.getInfo(videoURL);
         return info;
     }
 
-    getStream(videoURL: string, options: ytdl.downloadOptions): Readable {
-        return ytdl(videoURL, options);
+    getStream(videoURL: string, itag: number): Readable {
+        return ytdl(videoURL);
     }
 
     pauseDownload(ytdlStream: Readable): void {

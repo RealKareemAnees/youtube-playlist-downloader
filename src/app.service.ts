@@ -1,21 +1,48 @@
 import { Injectable } from "@nestjs/common";
 import { GetVideo } from "./get-video";
 import puppeteer from "puppeteer";
+import type ytdl from "ytdl-core";
 
 @Injectable()
 export class AppService {
     constructor(private getVideo: GetVideo) {}
 
-    downloadOneVideo(url: string) {
-        return this.getVideo.downloadVideo(url);
+    async getBasicInfo(videoURL: string) {
+        return this.getVideo.getBasicInfo(videoURL);
+    }
+    downloadOneVideo(
+        url: string,
+        options: {
+            itag: number;
+            format?: string;
+            filename?: string;
+            dist?: string;
+        },
+    ) {
+        return this.getVideo.downloadVideo(url, options);
     }
 
-    async downloadPlaylist(playlistUrl: string) {
+    async downloadPlaylist(
+        playlistUrl: string,
+        videsInfo: {
+            url: string;
+            itag: number;
+            format?: string;
+            filename?: string;
+            dist?: string;
+        }[] = [],
+    ) {
         try {
-            const videoUrls = await this.fetchPlaylistUrls(playlistUrl);
-            console.log("Fetched video URLs:", videoUrls);
+            for (const video of videsInfo) {
+                this.downloadOneVideo(video.url, {
+                    itag: video.itag,
+                    format: video.format,
+                    filename: video.filename,
+                    dist: video.dist,
+                });
+            }
         } catch (error) {
-            console.error("Error fetching playlist URLs:", error);
+            console.error(error);
         }
     }
 

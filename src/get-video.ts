@@ -82,18 +82,20 @@ export class GetVideo {
 
     downloadVideo(
         videoURL: string,
-        options: ytdl.downloadOptions = {},
-        format?: string,
-        filename?: string,
-        dist?: string,
+        options: {
+            itag: number;
+            format?: string;
+            filename?: string;
+            dist?: string;
+        },
     ): string {
         let path: string = "";
         Logger.log("downloading: " + videoURL);
         this.fsIo.writeFile(
-            this.ytdl.getStream(videoURL, options),
-            format,
-            filename,
-            dist,
+            this.ytdl.getStream(videoURL, options.itag),
+            options.format,
+            options.filename,
+            options.dist,
             (err, path) => {
                 if (err) {
                     throw err;
