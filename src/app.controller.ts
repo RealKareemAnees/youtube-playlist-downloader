@@ -6,8 +6,8 @@ import type ytdl from "ytdl-core";
 export class AppController {
     constructor(private appService: AppService) {}
 
-    getBasicInfo(videoURL: string) {
-        return this.appService.getBasicInfo(videoURL);
+    async getBasicInfo(videoURL: string) {
+        return await this.appService.getBasicInfo(videoURL);
     }
     downloadOneVideo(
         url: string,
@@ -21,7 +21,23 @@ export class AppController {
         return this.appService.downloadOneVideo(url, options);
     }
 
-    async downloadPlaylist(playlistURL: string) {
-        return await this.appService.downloadPlaylist(playlistURL);
+    async getPlaylistInfo(playlistURL: string) {
+        let videosInfos: any[] = [];
+        const urls = await this.appService.fetchPlaylistUrls(playlistURL);
+        for (const url of urls) {
+            videosInfos.push(await this.getBasicInfo(url));
+        }
+        return videosInfos;
+    }
+    async downloadPlaylist(
+        videsInfo: {
+            url: string;
+            itag: number;
+            format?: string;
+            filename?: string;
+            dist?: string;
+        }[] = [],
+    ) {
+        return await this.appService.downloadPlaylist(videsInfo);
     }
 }

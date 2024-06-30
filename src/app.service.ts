@@ -23,7 +23,6 @@ export class AppService {
     }
 
     async downloadPlaylist(
-        playlistUrl: string,
         videsInfo: {
             url: string;
             itag: number;
