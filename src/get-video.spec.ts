@@ -7,7 +7,7 @@ import { Mutex } from "./mutex";
 
 describe("GetVideo", () => {
     let provider: GetVideo;
-    const videoURLMock: string = "https://www.youtube.com/watch?v=T-teT0Ugdsw";
+    const videoURLMock: string = "https://www.youtube.com/watch?v=e5E8HHEYRNI";
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             imports: [ConfigModule.forRoot({ envFilePath: ".env" })],
@@ -21,9 +21,10 @@ describe("GetVideo", () => {
         expect(provider).toBeDefined();
     });
 
-    it("should get video info", () => {
-        const info = provider.getInfo(videoURLMock);
+    it("should get video info", (done) => {
+        const info = provider.downloadVideo(videoURLMock);
         console.log(info);
         expect(info).toBeDefined();
+        done();
     });
 });
