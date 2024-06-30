@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import ytdl from "ytdl-core";
 
 @Injectable()
 export class GetVideo {
